@@ -2,7 +2,7 @@
 const { readDB, saveDB} = require('./utils/utils'); // Utils to read and save db.js file
 const express = require('express');
 const path = require('path');
-const Note = require('./lib/note'); // Note class consructor from note.js
+const Note = require('./lib/Note'); // Note class consructor from note.js
 
 // Set up Express App
 const app = express();
