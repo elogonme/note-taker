@@ -23,7 +23,8 @@ app.get('/api/notes', (req, res) => {
 
 app.post('/api/notes', (req, res) => {
     notes = readDB();
-    
+    const newNote = req.body;
+    console.log('new Note:', newNote)
     console.log(notes);
     res.json(notes);
 });
