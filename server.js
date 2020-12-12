@@ -1,29 +1,33 @@
 // Dependencies
-const fs = require('fs');
+const { readDB, saveDB} = require('./utils/utils'); // Utils to read and save db.js file
 const express = require('express');
 const path = require('path');
-const Note = require('./lib/note');
+const Note = require('./lib/note'); // Note class consructor from note.js
 
 // Set up Express App
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Sets up the Express app to handle data parsing
 app.use(express.static('public'));
+// Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 let notes = []; // Array to store notes
 
+// Sends notes page when /notes is hit
 app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, 'public/notes.html')));
 
+// API which returns all notes in JSON format
 app.get('/api/notes', (req, res) => {
     notes = readDB();
     res.json(notes);
 });
 
+// Saves new note into db.js when POST request is received
 app.post('/api/notes', (req, res) => {
     notes = readDB();
+    // Create new note using Note class
     const newNote = new Note(req.body.title, req.body.text);
     notes.push(newNote);
     if (saveDB(notes)) {
@@ -34,6 +38,7 @@ app.post('/api/notes', (req, res) => {
     }
 });
 
+// Deletes note when DELETE request is received
 app.delete('/api/notes/:id', (req, res) => {
     const id = req.params.id;
     notes = readDB();
@@ -47,33 +52,11 @@ app.delete('/api/notes/:id', (req, res) => {
         res.status(404).send();
     }
 });
-// This is the home page
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public/index.html')));
 
+// Default route that sends the user first home page
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public/index.html')));
+
+// Starts the server to begin listening
 app.listen(PORT, () => {
     console.log(`Notes Server is listening on ${PORT}`)
 });
-
-// Helper functions
-const readDB = () => {
-    try { 
-        const notes = JSON.parse(fs.readFileSync(path.join(__dirname, 'db/db.json'), {encoding:'utf8'})); 
-        console.log("Successfully read notes from db.js ..."); 
-        console.log(notes);
-        return notes;
-      } catch(err) { 
-        console.error(err); 
-      } 
-}
-
-
-const saveDB = (notes) => {
-    try { 
-        fs.writeFileSync(path.join(__dirname, 'db/db.json'), JSON.stringify(notes));
-        console.log("Successfully saved notes to db.js ..."); 
-        return true;
-      } catch(err) { 
-        console.error(err);
-      } 
-    return false;
-}
