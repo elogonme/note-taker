@@ -46,8 +46,8 @@ app.delete('/api/notes/:id', (req, res) => {
         res.status(404).send();
     }
 });
-
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public/index.html')));
+// This is the home page
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public/index.html')));
 
 app.listen(PORT, () => {
     console.log(`Notes Server is listening on ${PORT}`)
