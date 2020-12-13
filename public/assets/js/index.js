@@ -61,7 +61,6 @@ const deleteNote = (id) =>
 
 const renderActiveNote = () => {
   hide(saveNoteBtn);
-
   if (activeNote.id) {
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
@@ -144,7 +143,7 @@ const renderNoteList = async (notes) => {
   // Returns HTML element with or without a delete button
   const createLi = (text, delBtn = true) => {
     const liEl = document.createElement('li');
-    liEl.classList.add('list-group-item');
+    liEl.classList.add('list-group-item', 'list-group-item-action');
 
     const spanEl = document.createElement('span');
     spanEl.innerText = text;
@@ -159,7 +158,7 @@ const renderNoteList = async (notes) => {
         'fa-trash-alt',
         'float-right',
         'text-danger',
-        'delete-note'
+        'delete-note',
       );
       delBtnEl.addEventListener('click', handleNoteDelete);
 
