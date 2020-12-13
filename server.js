@@ -15,7 +15,7 @@ app.use(express.json());
 
 let notes = []; // Array to store notes
 
-// Sends notes page when /notes is hit
+// Sends notes page when GET /notes is hit
 app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, 'public/notes.html')));
 
 // API which returns all notes in JSON format
@@ -42,7 +42,7 @@ app.post('/api/notes', (req, res) => {
 app.delete('/api/notes/:id', (req, res) => {
     const id = req.params.id;
     notes = readDB();
-    const indexOfNote = notes.findIndex(note => note.id = id);
+    const indexOfNote = notes.findIndex(note => note.id === id);
     if (indexOfNote !== -1) {
         console.log('Deleted Note: ', notes[indexOfNote]);
         notes.splice(indexOfNote, 1);
@@ -52,15 +52,16 @@ app.delete('/api/notes/:id', (req, res) => {
         res.status(404).send();
     }
 });
+
 // PUT request handler - updates note with id from request with new information
 app.put('/api/notes/:id', (req, res) => {
     const id = req.params.id;
     const noteUpdate = req.body;
-    console.log(noteUpdate);
     notes = readDB();
-    const indexOfNote = notes.findIndex(note => note.id = id);
+    const indexOfNote = notes.findIndex(note => note.id === id);
     if (indexOfNote !== -1) {
-        notes[indexOfNote] = noteUpdate;
+        notes[indexOfNote].title = noteUpdate.title;
+        notes[indexOfNote].text = noteUpdate.text;
         saveDB(notes);
         console.log('Updated Note: ', notes[indexOfNote]);
         res.status(200).json(notes[indexOfNote]);
