@@ -23,7 +23,7 @@ Application can be accessed at [https://gentle-reef-03095.herokuapp.com/](https:
 
 ## Usage
 
-Got to URL. Home page will be presented. Click get started. Notes page will be displayed. On left side all previously entered notes will be displayed. On the right side you can see contents of the note or enter new note. Click on titles to display each note. To enter new note click new note button. Enter title and text then click on save button. Note will be save on server and will appear in list on left side. Any note can be deleted by clicking on bin icon. All notes are save on server and user can return and view them again.  
+Got to URL. Home page will be presented. Click get started. Notes page will be displayed. On left side all previously entered notes will be displayed. On the right side you can see contents of the note or enter new note. Click on titles to display each note. Also user can update existing note and save it. To enter new note click new note button. Enter title and text then click on save button. Note will be save on server and will appear in list on left side. Any note can be deleted by clicking on bin icon. All notes are saved on server and user can return and view them again.  
 All app code is available at repository [https://github.com/elogonme/note-taker](https://github.com/elogonme/note-taker)
 
 ## License
