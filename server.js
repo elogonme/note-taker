@@ -7,7 +7,7 @@ const Note = require('./lib/Note'); // Note class consructor from note.js
 // Set up Express App
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+// folder on server for static files
 app.use(express.static('public'));
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
