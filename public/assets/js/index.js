@@ -42,6 +42,15 @@ const saveNote = (note) =>
     body: JSON.stringify(note),
   });
 
+const updateNote = (note) =>
+  fetch(`/api/notes/${note.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(note),
+  });
+
 const deleteNote = (id) =>
   fetch(`/api/notes/${id}`, {
     method: 'DELETE',
@@ -54,28 +63,34 @@ const renderActiveNote = () => {
   hide(saveNoteBtn);
 
   if (activeNote.id) {
-    noteTitle.setAttribute('readonly', true);
-    noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
   } else {
-    // If active note is new - blank - remove readonly attribute to allow user to enter note
-    noteTitle.removeAttribute('readonly', false);
-    noteText.removeAttribute('readonly', false);
     noteTitle.value = '';
     noteText.value = '';
   }
 };
 
 const handleNoteSave = () => {
+  const noteId = activeNote.id;
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
   };
-  saveNote(newNote).then(() => {
-    getAndRenderNotes();
-    renderActiveNote();
-  });
+  // If note ID exist then update existing note
+  if (noteId) {
+    newNote.id = noteId;
+    activeNote = newNote; // Update active note in local object too
+    updateNote(newNote).then(() => {
+      getAndRenderNotes();
+      renderActiveNote();
+    });
+  } else { // otherwise create new note
+    saveNote(newNote).then(() => {
+      getAndRenderNotes();
+      renderActiveNote();
+    });
+  }
 };
 
 // Delete the clicked note
