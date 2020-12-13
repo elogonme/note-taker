@@ -52,6 +52,23 @@ app.delete('/api/notes/:id', (req, res) => {
         res.status(404).send();
     }
 });
+// PUT request handler - updates note with id from request with new information
+app.put('/api/notes/:id', (req, res) => {
+    const id = req.params.id;
+    const noteUpdate = req.body;
+    console.log(noteUpdate);
+    notes = readDB();
+    const indexOfNote = notes.findIndex(note => note.id = id);
+    if (indexOfNote !== -1) {
+        notes[indexOfNote] = noteUpdate;
+        saveDB(notes);
+        console.log('Updated Note: ', notes[indexOfNote]);
+        res.status(200).json(notes[indexOfNote]);
+    } else {
+        console.log('Note is not found!')
+        res.status(404).send();
+    }
+});
 
 // Default route that sends the user first home page
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public/index.html')));
